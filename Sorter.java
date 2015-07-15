@@ -6,14 +6,6 @@ import javax.swing.*;
 public class Sorter {
     int[] specimens = new int[10];
 
-    public void setSpecimens(int numbers[]) {
-        specimens = numbers;
-    }
-
-    private int[] getSpecimens(int[] specimens) {
-        return specimens;
-    }
-
     private JFrame mainFrame;
     private JLabel headerLabel;
     private JLabel statusLabel;
@@ -24,8 +16,8 @@ public class Sorter {
     }
 
     public static void main(String[] args) {
-        Omm OmmProj = new Omm();
-        OmmProj.showActionListenerDemo();
+        Sorter SorterProj = new Sorter();
+        SorterProj.showActionListenerDemo();
     }
 
     private void prepareGUI() {
@@ -64,19 +56,16 @@ public class Sorter {
         controlPanel.add(panel);
         mainFrame.setVisible(true);
 
-
         iSortButton.addActionListener(new iSortActionListener());
         panel.add(iSortButton);
         controlPanel.add(panel);
         mainFrame.setVisible(true);
-
 
         bSortButton.addActionListener(new bSortActionListener());
         panel.add(bSortButton);
         controlPanel.add(panel);
         mainFrame.setVisible(true);
     }
-
 
     class CustomActionListener implements ActionListener {
 
@@ -87,11 +76,8 @@ public class Sorter {
             statusLabel.setText(String.valueOf(specimens[0] + ", " + specimens[1] + ", " + specimens[2] + ", " +
                     specimens[3] + ", " + specimens[4] + ", " + specimens[5] + ", " + specimens[6] + ", " + specimens[7] + ", "
                     + specimens[8] + ", " + specimens[9]));
-            setSpecimens(specimens);
-            getSpecimens(specimens);
         }
     }
-
 
     class iSortActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -99,8 +85,6 @@ public class Sorter {
             statusLabel.setText(String.valueOf(specimens[0] + ", " + specimens[1] + ", " + specimens[2] + ", " +
                     specimens[3] + ", " + specimens[4] + ", " + specimens[5] + ", " + specimens[6] + ", " + specimens[7] + ", "
                     + specimens[8] + ", " + specimens[9]));
-            setSpecimens(specimens);
-            getSpecimens(specimens);
         }
     }
 
@@ -111,17 +95,10 @@ public class Sorter {
             statusLabel.setText(String.valueOf(specimens[0] + ", " + specimens[1] + ", " + specimens[2] + ", " +
                     specimens[3] + ", " + specimens[4] + ", " + specimens[5] + ", " + specimens[6] + ", " +
                     specimens[7] + ", " + specimens[8] + ", " + specimens[9]));
-            setSpecimens(specimens);
-            getSpecimens(specimens);
         }
     }
 
-    static class iSortData {
-        private final int[] specimens;
-
-        public iSortData(int[] specimens) {
-            this.specimens = specimens;
-        }
+    public static class iSortData {
 
         public static int[] doInsertionSort(int[] specimens) {
             int temp;
