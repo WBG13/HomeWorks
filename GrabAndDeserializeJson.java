@@ -35,7 +35,6 @@ public class JsonORfU {
 
     public static void main(String[] args) throws IOException, JSONException {
         JSONObject json = readJsonFromUrl("http://jsonplaceholder.typicode.com/posts/1");
-        System.out.println(json.toString());
         System.out.println(json.get("id"));
         System.out.println(json.get("userId"));
         System.out.println(json.get("title"));
