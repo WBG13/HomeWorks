@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NoMan {
+public class JsonORfU {
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
