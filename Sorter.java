@@ -1,9 +1,12 @@
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Sorter {
-    int[] specimens = new int[10];
+    static int[] specimens = new int[10];
 
     private JFrame mainFrame;
     private JLabel headerLabel;
@@ -49,6 +52,7 @@ public class Sorter {
         JButton createButton = new JButton("Create random numbers");
         JButton iSortButton = new JButton("Insertion sorting");
         JButton bSortButton = new JButton("Bubble sorting");
+        JButton qSortButton = new JButton("Quick sorting");
 
         createButton.addActionListener(new CustomActionListener());
         panel.add(createButton);
@@ -62,6 +66,11 @@ public class Sorter {
 
         bSortButton.addActionListener(new bSortActionListener());
         panel.add(bSortButton);
+        controlPanel.add(panel);
+        mainFrame.setVisible(true);
+
+        qSortButton.addActionListener(new qSortActionListener());
+        panel.add(qSortButton);
         controlPanel.add(panel);
         mainFrame.setVisible(true);
     }
@@ -91,8 +100,14 @@ public class Sorter {
 
     class bSortActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             bSortData.bubbleSort(specimens);
+            sText(specimens);
+        }
+    }
+
+    class qSortActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            qSort.qSortData(specimens);
             sText(specimens);
         }
     }
@@ -124,6 +139,40 @@ public class Sorter {
                         specimens[j] = temp;
                     }
                 }
+            }
+            return specimens;
+        }
+    }
+
+    public static class qSort {
+        public static void qSortData(int[] specimens) {
+            int low = 0;
+            int high = specimens.length - 1;
+            quickSort(low, high);
+        }
+
+        private static int[] quickSort(int low, int high) {
+            int i = low, j = high;
+            int core = specimens[low + (high - low) / 2];
+            while (i <= j) {
+                while (specimens[i] < core) {
+                    i++;
+                }
+                while (specimens[j] > core) {
+                    j--;
+                }
+
+                if (i <= j) {
+                    int temp = specimens[i];
+                    specimens[i] = specimens[j];
+                    specimens[j] = temp;
+                    i++;
+                    j--;
+                }
+                if (low < j)
+                    quickSort(low, j);
+                if (i < high)
+                    quickSort(i, high);
             }
             return specimens;
         }
