@@ -159,7 +159,7 @@ public class Con2MySql extends JFrame implements ActionListener {
     public void find(String input) {
         {
             try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk",uName, uPass);
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
 
                 String SQL = "select * from NoteBook where user_name='" + input + "'";
