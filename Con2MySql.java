@@ -54,14 +54,12 @@ public class Con2MySql extends JFrame implements ActionListener {
             System.exit(0);
         }
 
-
         setSize(WIDTH, HEIGHT);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-
 
         JButton get1Button = new JButton("Show");
         get1Button.addActionListener(this);
@@ -79,19 +77,16 @@ public class Con2MySql extends JFrame implements ActionListener {
         clearButton.addActionListener(this);
         buttonPanel.add(clearButton);
 
-
         JPanel textPanel = new JPanel();
         JLabel nameLabel = new JLabel("Name: ");
 
         theTextName = new JTextField(8);
         theTextName.setBackground(Color.white);
 
-
         JLabel telLabel = new JLabel("Telephone: ");
 
         theTextTel = new JTextField(8);
         theTextTel.setBackground(Color.white);
-
 
         outputData = new JTextArea(15, 30);
         JScrollPane scrollableTextArea = new JScrollPane(outputData);
@@ -107,6 +102,8 @@ public class Con2MySql extends JFrame implements ActionListener {
         contentPane.add(textPanel, BorderLayout.CENTER);
         contentPane.add(textPanel, BorderLayout.CENTER);
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
+        
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -133,16 +130,13 @@ public class Con2MySql extends JFrame implements ActionListener {
                 theTextTel.setText("");
                 outputData.setText("");
                 break;
-            default:
-                message.add("Please enter user name and telephone!");
-                sText(message);
-                break;
         }
     }
 
     public static void main(String[] args) {
         Con2MySql guiMemo = new Con2MySql();
         guiMemo.setVisible(true);
+
     }
 
     public void sText(java.util.List name) {
@@ -166,7 +160,6 @@ public class Con2MySql extends JFrame implements ActionListener {
             e1.printStackTrace();
         }
     }
-
 
     public void insert(String name, String tel) {
         if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
