@@ -18,13 +18,10 @@ public class Con2MySql extends JFrame implements ActionListener {
     private JTextField theTextTel;
     private String nameData;
     private String telData;
-    private String name;
-    private String tel;
-
     private String uName;
     private String uPass;
 
-    public JTextArea infoTel;
+    public JTextArea outputData;
 
 
     public Con2MySql() {
@@ -95,8 +92,8 @@ public class Con2MySql extends JFrame implements ActionListener {
         theTextTel.setBackground(Color.white);
 
 
-        infoTel = new JTextArea(15, 30);
-        JScrollPane scrollableTextArea = new JScrollPane(infoTel);
+        outputData = new JTextArea(15, 30);
+        JScrollPane scrollableTextArea = new JScrollPane(outputData);
         JScrollPane scrollPane = new JScrollPane(textPanel);
 
         textPanel.add(nameLabel, BorderLayout.SOUTH);
@@ -132,7 +129,7 @@ public class Con2MySql extends JFrame implements ActionListener {
             case "Clear":
                 theTextName.setText("");
                 theTextTel.setText("");
-                infoTel.setText("");
+                outputData.setText("");
                 break;
             default:
                 theTextName.setText("Error");
@@ -149,7 +146,7 @@ public class Con2MySql extends JFrame implements ActionListener {
         String p = String.valueOf(name);
         p = p.replace("[", "");
         p = p.replace("]", "");
-        infoTel.setText(p);
+        outputData.setText(p);
     }
 
     public void find(String input) {
@@ -164,9 +161,7 @@ public class Con2MySql extends JFrame implements ActionListener {
                 java.util.List<String> data = new ArrayList<>();
 
                 while (rs.next()) {
-                    data.add("Name: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
-                    name = rs.getString("user_name");
-                    tel = rs.getString("user_tel");
+                    data.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
                 }
                 sText(data);
             } catch (SQLException e1) {
