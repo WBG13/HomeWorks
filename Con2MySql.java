@@ -20,6 +20,7 @@ public class Con2MySql extends JFrame implements ActionListener {
     private String uPass;
     public String nameData;
     public String telData;
+    public String localData;
 
     public JTextArea outputData;
     java.util.List<String> message = new ArrayList<>();
@@ -118,7 +119,8 @@ public class Con2MySql extends JFrame implements ActionListener {
                 break;
             case "Find":
                 nameData = theTextName.getText();
-                find(nameData);
+                telData = theTextTel.getText();
+                find(nameData, telData);
 
                 break;
             case "Put":
@@ -151,24 +153,20 @@ public class Con2MySql extends JFrame implements ActionListener {
         message = new ArrayList<>();
     }
 
-    public void find(String input) {
-        {
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
-                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-
-                String SQL = "select * from NoteBook where user_name='" + input + "'";
-                ResultSet rs = stmt.executeQuery(SQL);
-
-                while (rs.next()) {
-                    message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
-                }
-                sText(message);
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+    public void con(String findRequest) {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
+            com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery(findRequest);
+            while (rs.next()) {
+                message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
             }
+            sText(message);
+        } catch (SQLException e1) {
+            e1.printStackTrace();
         }
     }
+
 
     public void insert(String name, String tel) {
         if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
@@ -176,6 +174,8 @@ public class Con2MySql extends JFrame implements ActionListener {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
                 stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
+                message.add("Data has been added successfully!");
+                sText(message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -184,20 +184,25 @@ public class Con2MySql extends JFrame implements ActionListener {
         sText(message);
     }
 
+    public void find(String name, String tel) {
+        {
+            if (Objects.equals(name, "") && Objects.equals(tel, "")) {
+                message.add("Please enter user name or telephone!");
+                sText(message);
+            } else if (!Objects.equals(name, "")) {
+                localData = "select * from NoteBook where user_name='" + name + "'";
+                con(localData);
+            } else {
+                localData = "select * from NoteBook where user_tel='" + tel + "'";
+                con(localData);
+            }
+        }
+    }
+
     public class show {
         {
-            ResultSet rs;
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
-                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-                rs = stmt.executeQuery("SELECT * FROM NoteBook");
-                while (rs.next()) {
-                    message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
-                }
-                sText(message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            localData = "SELECT * FROM NoteBook";
+            con(localData);
         }
     }
 }
