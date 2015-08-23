@@ -61,17 +61,21 @@ public class Con2MySql extends JFrame implements ActionListener {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        JButton get1Button = new JButton("Show");
-        get1Button.addActionListener(this);
-        buttonPanel.add(get1Button);
+        JButton showButton = new JButton("Show");
+        showButton.addActionListener(this);
+        buttonPanel.add(showButton);
 
-        JButton get2Button = new JButton("Find");
-        get2Button.addActionListener(this);
-        buttonPanel.add(get2Button);
+        JButton findButton = new JButton("Find");
+        findButton.addActionListener(this);
+        buttonPanel.add(findButton);
 
-        JButton get3Button = new JButton("Put");
-        get3Button.addActionListener(this);
-        buttonPanel.add(get3Button);
+        JButton putButton = new JButton("Put");
+        putButton.addActionListener(this);
+        buttonPanel.add(putButton);
+
+        JButton deleteButton = new JButton("Erase");
+        deleteButton.addActionListener(this);
+        buttonPanel.add(deleteButton);
 
         JButton clearButton = new JButton("Clear");
         clearButton.addActionListener(this);
@@ -100,9 +104,8 @@ public class Con2MySql extends JFrame implements ActionListener {
         textPanel.add(scrollableTextArea);
 
         contentPane.add(textPanel, BorderLayout.CENTER);
-        contentPane.add(textPanel, BorderLayout.CENTER);
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
@@ -118,12 +121,16 @@ public class Con2MySql extends JFrame implements ActionListener {
                 nameData = theTextName.getText();
                 telData = theTextTel.getText();
                 find(nameData, telData);
-
                 break;
             case "Put":
                 nameData = theTextName.getText();
                 telData = theTextTel.getText();
                 insert(nameData, telData);
+                break;
+            case "Erase":
+                nameData = theTextName.getText();
+                telData = theTextTel.getText();
+                delete(nameData, telData);
                 break;
             case "Clear":
                 theTextName.setText("");
@@ -139,8 +146,8 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     }
 
-    public void sText(java.util.List name) {
-        String p = String.valueOf(name);
+    public void sText(java.util.List input) {
+        String p = String.valueOf(input);
         p = p.replace("[", "");
         p = p.replace("]", "");
         outputData.setText(p);
@@ -167,8 +174,6 @@ public class Con2MySql extends JFrame implements ActionListener {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
                 stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
-                message.add("Data has been added successfully!");
-                sText(message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -197,5 +202,20 @@ public class Con2MySql extends JFrame implements ActionListener {
             localData = "SELECT * FROM NoteBook";
             con(localData);
         }
+    }
+
+    public void delete(String name, String tel) {
+        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
+            try {
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
+                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
+                stmt.executeUpdate("delete from NoteBook where User_Name ='" + name + "' and User_Tel ='" + tel + "' limit 1;"
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else
+            message.add("Please enter user name and telephone!");
+        sText(message);
     }
 }
