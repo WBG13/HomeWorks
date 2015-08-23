@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
 
 
 public class Con2MySql extends JFrame implements ActionListener {
@@ -171,13 +172,23 @@ public class Con2MySql extends JFrame implements ActionListener {
     }
 
     public void insert(String name, String tel) {
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
-            com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-            stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
+            try {
+                System.out.println("insert activated");
+                System.out.println("name= " + name);
+                System.out.println("tel= " + tel);
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
+                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
+                stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else
+            System.out.println("Error activated");
+        java.util.List<String> message = new ArrayList<>();
+        message.add("Please enter user name and telephone!");
+        sText(message);
+
     }
 
     public class show {
