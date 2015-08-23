@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.List;
 
 
 public class Con2MySql extends JFrame implements ActionListener {
@@ -17,13 +16,13 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     private JTextField theTextName;
     private JTextField theTextTel;
-    private String nameData;
-    private String telData;
     private String uName;
     private String uPass;
+    public String nameData;
+    public String telData;
 
     public JTextArea outputData;
-
+    java.util.List<String> message = new ArrayList<>();
 
     public Con2MySql() {
 
@@ -133,7 +132,8 @@ public class Con2MySql extends JFrame implements ActionListener {
                 outputData.setText("");
                 break;
             default:
-                theTextName.setText("Error");
+                message.add("Please enter user name and telephone!");
+                sText(message);
                 break;
         }
     }
@@ -148,6 +148,7 @@ public class Con2MySql extends JFrame implements ActionListener {
         p = p.replace("[", "");
         p = p.replace("]", "");
         outputData.setText(p);
+        message = new ArrayList<>();
     }
 
     public void find(String input) {
@@ -159,12 +160,10 @@ public class Con2MySql extends JFrame implements ActionListener {
                 String SQL = "select * from NoteBook where user_name='" + input + "'";
                 ResultSet rs = stmt.executeQuery(SQL);
 
-                java.util.List<String> data = new ArrayList<>();
-
                 while (rs.next()) {
-                    data.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
+                    message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
                 }
-                sText(data);
+                sText(message);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -174,9 +173,6 @@ public class Con2MySql extends JFrame implements ActionListener {
     public void insert(String name, String tel) {
         if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
             try {
-                System.out.println("insert activated");
-                System.out.println("name= " + name);
-                System.out.println("tel= " + tel);
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
                 stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
@@ -184,11 +180,8 @@ public class Con2MySql extends JFrame implements ActionListener {
                 e.printStackTrace();
             }
         } else
-            System.out.println("Error activated");
-        java.util.List<String> message = new ArrayList<>();
-        message.add("Please enter user name and telephone!");
+            message.add("Please enter user name and telephone!");
         sText(message);
-
     }
 
     public class show {
@@ -198,13 +191,10 @@ public class Con2MySql extends JFrame implements ActionListener {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
                 rs = stmt.executeQuery("SELECT * FROM NoteBook");
-                java.util.List<String> data = new ArrayList<>();
-
                 while (rs.next()) {
-                    data.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
+                    message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
                 }
-
-                sText(data);
+                sText(message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
