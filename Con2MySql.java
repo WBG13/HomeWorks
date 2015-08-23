@@ -16,8 +16,8 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     private JTextField theTextName;
     private JTextField theTextTel;
-    private String memo1;
-    private String memo2;
+    private String nameData;
+    private String telData;
     private String name;
     private String tel;
 
@@ -116,20 +116,18 @@ public class Con2MySql extends JFrame implements ActionListener {
 
         switch (actionCommand) {
             case "Show":
-                memo1 = theTextName.getText();
+                nameData = theTextName.getText();
                 new show();
                 break;
             case "Find":
-                System.out.print("Start Find");
-                memo1 = theTextName.getText();
-                find(memo1);
+                nameData = theTextName.getText();
+                find(nameData);
 
                 break;
             case "Put":
-                System.out.println("Put active");
-                memo1 = theTextName.getText();
-                memo2 = theTextTel.getText();
-                insert(memo1, memo2);
+                nameData = theTextName.getText();
+                telData = theTextTel.getText();
+                insert(nameData, telData);
                 break;
             case "Clear":
                 theTextName.setText("");
@@ -148,8 +146,6 @@ public class Con2MySql extends JFrame implements ActionListener {
     }
 
     public void sText(java.util.List name) {
-        System.out.println("Seting Text");
-        System.out.println("InfoTl: " + infoTel);
         String p = String.valueOf(name);
         p = p.replace("[", "");
         p = p.replace("]", "");
@@ -165,14 +161,14 @@ public class Con2MySql extends JFrame implements ActionListener {
                 String SQL = "select * from NoteBook where user_name='" + input + "'";
                 ResultSet rs = stmt.executeQuery(SQL);
 
-                java.util.List<String> mutafrukt = new ArrayList<>();
+                java.util.List<String> data = new ArrayList<>();
 
                 while (rs.next()) {
-                    mutafrukt.add("Name: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
+                    data.add("Name: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
                     name = rs.getString("user_name");
                     tel = rs.getString("user_tel");
                 }
-                sText(mutafrukt);
+                sText(data);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -193,16 +189,16 @@ public class Con2MySql extends JFrame implements ActionListener {
         {
             ResultSet rs;
             try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", "root", "Ta01Chi06");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
                 com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
                 rs = stmt.executeQuery("SELECT * FROM NoteBook");
-                java.util.List<String> mutafrukt = new ArrayList<>();
+                java.util.List<String> data = new ArrayList<>();
 
                 while (rs.next()) {
-                    mutafrukt.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel") + "");
+                    data.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
                 }
 
-                sText(mutafrukt);
+                sText(data);
             } catch (Exception e) {
                 e.printStackTrace();
             }
