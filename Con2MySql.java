@@ -27,7 +27,7 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     public Con2MySql() {
 
-        JFrame frame = new JFrame("");
+        JFrame frame = new JFrame();
         JPanel panel = new JPanel(new BorderLayout(5, 5));
 
         JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
@@ -143,7 +143,6 @@ public class Con2MySql extends JFrame implements ActionListener {
     public static void main(String[] args) {
         Con2MySql guiMemo = new Con2MySql();
         guiMemo.setVisible(true);
-
     }
 
     public void sText(java.util.List input) {
@@ -154,32 +153,20 @@ public class Con2MySql extends JFrame implements ActionListener {
         message = new ArrayList<>();
     }
 
-    public void con(String findRequest) {
+    public void recToDB(String inputRequest, int comm) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
             com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery(findRequest);
-            while (rs.next()) {
-                message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
-            }
-            sText(message);
+            if (comm == 0) {
+                ResultSet rs = stmt.executeQuery(inputRequest);
+                while (rs.next()) {
+                    message.add("\nName: " + rs.getString("user_name") + ", Telephone: " + rs.getString("user_tel"));
+                }
+                sText(message);
+            } else stmt.executeUpdate(inputRequest);
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
-    }
-
-    public void insert(String name, String tel) {
-        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
-                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-                stmt.executeUpdate("INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else
-            message.add("Please enter user name and telephone!");
-        sText(message);
     }
 
     public void find(String name, String tel) {
@@ -189,10 +176,10 @@ public class Con2MySql extends JFrame implements ActionListener {
                 sText(message);
             } else if (!Objects.equals(name, "")) {
                 localData = "select * from NoteBook where user_name='" + name + "'";
-                con(localData);
+                recToDB(localData, 0);
             } else {
                 localData = "select * from NoteBook where user_tel='" + tel + "'";
-                con(localData);
+                recToDB(localData, 0);
             }
         }
     }
@@ -200,20 +187,26 @@ public class Con2MySql extends JFrame implements ActionListener {
     public class show {
         {
             localData = "SELECT * FROM NoteBook";
-            con(localData);
+            recToDB(localData, 0);
         }
     }
 
     public void delete(String name, String tel) {
         if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
-                com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
-                stmt.executeUpdate("delete from NoteBook where User_Name ='" + name + "' and User_Tel ='" + tel + "' limit 1;"
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            localData = "delete from NoteBook where User_Name ='" + name + "' and User_Tel ='" + tel + "' limit 1;"
+            ;
+            recToDB(localData, 1);
+            message.add(name + " with phone number: " + tel + " has been erased!");
+        } else
+            message.add("Please enter user name and telephone!");
+        sText(message);
+    }
+
+    public void insert(String name, String tel) {
+        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
+            localData = "INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');";
+            recToDB(localData, 1);
+            message.add(name + " with phone number: " + tel + " has been added!");
         } else
             message.add("Please enter user name and telephone!");
         sText(message);
