@@ -20,7 +20,6 @@ public class Con2MySql extends JFrame implements ActionListener {
     private String uPass;
     public String nameData;
     public String telData;
-    public String localData;
 
     public JTextArea outputData;
     java.util.List<String> message = new ArrayList<>();
@@ -111,27 +110,42 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
+        nameData = theTextName.getText();
+        telData = theTextTel.getText();
 
         switch (actionCommand) {
             case "Show":
-                nameData = theTextName.getText();
-                new show();
+                recToDB("SELECT * FROM NoteBook", 0);
                 break;
-            case "Find":
-                nameData = theTextName.getText();
-                telData = theTextTel.getText();
-                find(nameData, telData);
-                break;
-            case "Put":
-                nameData = theTextName.getText();
-                telData = theTextTel.getText();
-                insert(nameData, telData);
-                break;
-            case "Erase":
-                nameData = theTextName.getText();
-                telData = theTextTel.getText();
-                delete(nameData, telData);
-                break;
+            case "Find": {
+                if (Objects.equals(nameData, "") && Objects.equals(telData, "")) {
+                    message.add("Please enter user name or telephone!");
+                    sText(message);
+                } else if (!Objects.equals(nameData, "")) {
+                    recToDB("select * from NoteBook where user_name='" + nameData + "'", 0);
+                } else {
+                    recToDB("select * from NoteBook where user_tel='" + telData + "'", 0);
+                }
+            }
+            break;
+            case "Put": {
+                if (!Objects.equals(nameData, "") && !Objects.equals(telData, "")) {
+                    recToDB("INSERT INTO NoteBook " + "VALUES ('" + nameData + "', '" + telData + "');", 1);
+                    message.add(nameData + " with phone number: " + telData + " has been added!");
+                } else
+                    message.add("Please enter user name and telephone!");
+                sText(message);
+            }
+            break;
+            case "Erase": {
+                if (!Objects.equals(nameData, "") && !Objects.equals(telData, "")) {
+                    recToDB("delete from NoteBook where User_Name ='" + nameData + "' and User_Tel ='" + telData + "' limit 1;", 1);
+                    message.add(nameData + " with phone number: " + telData + " has been erased!");
+                } else
+                    message.add("Please enter user name and telephone!");
+                sText(message);
+            }
+            break;
             case "Clear":
                 theTextName.setText("");
                 theTextTel.setText("");
@@ -167,48 +181,5 @@ public class Con2MySql extends JFrame implements ActionListener {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
-    }
-
-    public void find(String name, String tel) {
-        {
-            if (Objects.equals(name, "") && Objects.equals(tel, "")) {
-                message.add("Please enter user name or telephone!");
-                sText(message);
-            } else if (!Objects.equals(name, "")) {
-                localData = "select * from NoteBook where user_name='" + name + "'";
-                recToDB(localData, 0);
-            } else {
-                localData = "select * from NoteBook where user_tel='" + tel + "'";
-                recToDB(localData, 0);
-            }
-        }
-    }
-
-    public class show {
-        {
-            localData = "SELECT * FROM NoteBook";
-            recToDB(localData, 0);
-        }
-    }
-
-    public void delete(String name, String tel) {
-        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
-            localData = "delete from NoteBook where User_Name ='" + name + "' and User_Tel ='" + tel + "' limit 1;"
-            ;
-            recToDB(localData, 1);
-            message.add(name + " with phone number: " + tel + " has been erased!");
-        } else
-            message.add("Please enter user name and telephone!");
-        sText(message);
-    }
-
-    public void insert(String name, String tel) {
-        if (!Objects.equals(name, "") && !Objects.equals(tel, "")) {
-            localData = "INSERT INTO NoteBook " + "VALUES ('" + name + "', '" + tel + "');";
-            recToDB(localData, 1);
-            message.add(name + " with phone number: " + tel + " has been added!");
-        } else
-            message.add("Please enter user name and telephone!");
-        sText(message);
     }
 }
