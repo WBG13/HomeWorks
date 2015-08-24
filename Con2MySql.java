@@ -154,7 +154,7 @@ public class Con2MySql extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] Lolly) {
         Con2MySql guiMemo = new Con2MySql();
         guiMemo.setVisible(true);
     }
