@@ -17,7 +17,7 @@ public class Con2MySql extends JFrame implements ActionListener {
     private JTextField theTextName;
     private JTextField theTextTel;
     private String uName;
-    private String uPass;
+    private char[] uPass;
     public String nameData;
     public String telData;
 
@@ -44,10 +44,10 @@ public class Con2MySql extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(frame, panel, "LOGIN", JOptionPane.QUESTION_MESSAGE);
 
         uName = username.getText();
-        uPass = password.getText();
+        uPass = password.getPassword();
 
         try {
-            DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
+            DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, String.valueOf(uPass));
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -154,7 +154,7 @@ public class Con2MySql extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] Lolly) {
+    public static void main(String[] args) {
         Con2MySql guiMemo = new Con2MySql();
         guiMemo.setVisible(true);
     }
@@ -169,7 +169,7 @@ public class Con2MySql extends JFrame implements ActionListener {
 
     public void recToDB(String inputRequest, int comm) {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, uPass);
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/junk", uName, String.valueOf(uPass));
             com.mysql.jdbc.Statement stmt = (com.mysql.jdbc.Statement) con.createStatement();
             if (comm == 0) {
                 ResultSet rs = stmt.executeQuery(inputRequest);
