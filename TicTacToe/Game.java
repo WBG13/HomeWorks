@@ -47,7 +47,7 @@ public class Game implements Runnable {
                 end("TIE");
             }
             try {
-                if (Check.checkWinner()) {
+                if (Check.Winner()) {
                     end("Player = " + currentPlayer.name + " win!!!");
                 }
             } catch (InterruptedException e) {
