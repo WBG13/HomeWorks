@@ -25,7 +25,7 @@ public class PortListener implements Runnable {
             } catch (IOException e) {
                 try {
                     java.util.List<String> disc = new ArrayList<>();
-                    disc.add("ru.GeekBrains.Chat.PavelShu.Client.Server not responding.");
+                    disc.add("Server not responding.");
                     ClientGUI.setResults((ArrayList) disc);
                 } catch (Exception e1) {
                     e1.printStackTrace();
