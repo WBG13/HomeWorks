@@ -91,7 +91,7 @@ public class StartServer {
         while (is.hasNext()) {
             s = is.next();
             try {
-                Scanner in = new Scanner(new File("src/ru.GeekBrains.Chat.PavelShu.Client.Server/BlockingWords"));
+                Scanner in = new Scanner(new File("src/Server/BlockingWords"));
                 while (in.hasNext()) {
                     p = in.next();
                     if (s.equals(p)) s = "%&#@";
