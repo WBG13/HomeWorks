@@ -6,19 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CountWords {
-    public static void main(String[] args)
-            throws FileNotFoundException, IOException {
-
+       public static void main(String[] args) throws IOException {
         File file = new File("E:\\1.txt");
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(
-                        new FileInputStream(file), "UTF-8"
-                )
+                        new FileInputStream(file), "UTF-8")
         );
-        String line = null;
+        String line;
         while ((line = br.readLine()) != null) {
             System.out.println(line);
-
             String[] myString = line.split("\\s+");
             System.out.println("Words:" + myString.length);
         }
