@@ -1,26 +1,37 @@
 public class Boxes {
- 
-    public static void main(String a[]){
-        int[] arr1 =  new int [10];
-		for(int x=0; x < arr1.length; x++){
-			arr1[x]=(int) Math.round(Math.random()*100);}
-                       int[] arr2 = doInsertionSort(arr1);
-        for(int i:arr2){
-            System.out.print(i);
-            System.out.print(", ");}}
-		
-    public static int[] doInsertionSort(int[] input){
-         
+     public static void main(String a[]) {
+        Boxes b = new Boxes();
+        int[] arr = b.createRanNum(new int[10]);
+        b.print(arr);
+        arr = sort(arr);
+        b.print(arr);
+    }
+
+    public static int[] sort(int[] input) {
         int temp;
         for (int x = 1; x < input.length; x++) {
-            for(int j = x ; j > 0 ; j--){
-                if(input[j] < input[j-1]){
+            for (int j = x; j > 0; j--) {
+                if (input[j] < input[j - 1]) {
                     temp = input[j];
-                    input[j] = input[j-1];
-                    input[j-1] = temp;
+                    input[j] = input[j - 1];
+                    input[j - 1] = temp;
                 }
             }
         }
         return input;
+    }
+
+    public void print(int[] massive) {
+        for (int i : massive) {
+            System.out.print(i != massive[massive.length - 1] ? i + ", " : i + ".");
+        }
+        System.out.println();
+    }
+
+    public int[] createRanNum(int[] massive) {
+        for (int i = 0; i < massive.length; i++) {
+            massive[i] = (int) Math.round(Math.random() * 100);
+        }
+        return massive;
     }
 }
