@@ -1,5 +1,5 @@
 public class Boxes {
-     public static void main(String a[]) {
+     public static void main(String [] argm) {
         Boxes b = new Boxes();
         int[] arr = b.createRanNum(new int[10]);
         b.print(arr);
