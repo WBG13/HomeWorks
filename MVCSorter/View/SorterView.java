@@ -5,29 +5,51 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class SorterView {
+    private int mainFrameHeight, mainFrameWidth;
     private JFrame mainFrame;
     private JLabel headerLabel;
     private JLabel statusLabel;
-    private JPanel controlPanel;
+    JButton[] buttons;
 
-    JButton createButton = new JButton("Create random numbers");
-    JButton iSortButton = new JButton("Insertion sorting");
-    JButton bSortButton = new JButton("Bubble sorting");
-    JButton qSortButton = new JButton("Quick sorting");
+    private enum CMD {
+        CREATE("Create random numbers"), ISORT("Insertion sorting"), BSORT("Bubble sorting"), QSORT("Quick sorting");
+
+        CMD(String command) {
+            this.command = command;
+        }
+
+        private String command;
+
+        @Override
+        public String toString() {
+            return command;
+        }
+    }
 
     public SorterView() {
         prepareGUI();
     }
 
+    public void setMainFrameWidth(double width) {
+        this.mainFrameWidth = (int) width / 2;
+    }
+
+    public void setMainFrameHeight(double height) {
+        this.mainFrameHeight = (int) height / 4;
+    }
+
     private void prepareGUI() {
+
         mainFrame = new JFrame("Sorter");
-        mainFrame.setSize(700, 200);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setMainFrameWidth(screenSize.getWidth());
+        setMainFrameHeight(screenSize.getHeight());
+        mainFrame.setSize((mainFrameWidth), (mainFrameHeight));
         mainFrame.setLayout(new GridLayout(3, 1));
 
         headerLabel = new JLabel("", JLabel.CENTER);
         statusLabel = new JLabel("", JLabel.CENTER);
 
-        statusLabel.setSize(350, 100);
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
                 System.exit(0);
@@ -36,20 +58,22 @@ public class SorterView {
         mainFrame.add(headerLabel);
         mainFrame.add(statusLabel);
 
-        controlPanel = createControlPane();
+        createControlPane();
         mainFrame.setVisible(true);
     }
-    public JPanel createControlPane(){
-        JPanel pane,panel = new JPanel();
+
+    public JPanel createControlPane() {
+        CMD[] cmd = CMD.values();
+        buttons = new JButton[cmd.length];
+        JPanel pane, panel = new JPanel();
         pane = new JPanel();
         pane.setLayout(new FlowLayout());
         pane.add(panel);
         mainFrame.add(pane);
-
-        panel.add(createButton);
-        panel.add(iSortButton);
-        panel.add(bSortButton);
-        panel.add(qSortButton);
+        for (int i = 0; i < cmd.length; i++) {
+            buttons[i] = new JButton(String.valueOf(cmd[i]));
+            panel.add(buttons[i]);
+        }
         return panel;
     }
 
@@ -60,9 +84,8 @@ public class SorterView {
     }
 
     public void addSorterListener(ActionListener listenForSorterButton) {
-        createButton.addActionListener(listenForSorterButton);
-        iSortButton.addActionListener(listenForSorterButton);
-        bSortButton.addActionListener(listenForSorterButton);
-        qSortButton.addActionListener(listenForSorterButton);
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].addActionListener(listenForSorterButton);
+        }
     }
 }
