@@ -24,25 +24,28 @@ public class SorterController {
 
     class SorterListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String actionCommand = e.getActionCommand();
-            switch (actionCommand) {
-                case ("Create random numbers"):
-                    setMassive(sorter.createRanNum(massive));
-                    gui.sText(getMassive());
-                    break;
-                case ("Insertion sorting"):
-                    setMassive(sorter.iSortData(massive));
-                    gui.sText(getMassive());
-                    break;
-                case ("Bubble sorting"):
-                    setMassive(sorter.bSortData(massive));
-                    gui.sText(getMassive());
-                    break;
-                case ("Quick sorting"):
-                    setMassive(sorter.quickSort(0,massive.length-1,massive));
-                    gui.sText(getMassive());
-                    break;
-            }
+            executeCommand(e.getActionCommand());
+        }
+    }
+
+    public void executeCommand(String cmd) {
+        switch (cmd) {
+            case ("Create random numbers"):
+                setMassive(sorter.createRanNum(massive));
+                gui.sText(getMassive());
+                break;
+            case ("Insertion sorting"):
+                setMassive(sorter.iSortData(massive));
+                gui.sText(getMassive());
+                break;
+            case ("Bubble sorting"):
+                setMassive(sorter.bSortData(massive));
+                gui.sText(getMassive());
+                break;
+            case ("Quick sorting"):
+                setMassive(sorter.quickSort(0, massive.length - 1, massive));
+                gui.sText(getMassive());
+                break;
         }
     }
 }
