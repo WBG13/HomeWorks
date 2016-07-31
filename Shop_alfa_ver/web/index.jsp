@@ -7,16 +7,16 @@
   </head>
   <body>
 
-  <%@ include file="WEB-INF/header.jsp" %>
+  <%@ include file="web_support_elements/header.jsp" %>
   <table style="width: 100%;">
     <tr>
       <td style="width: 25%; height: 80%" valign="top">
-        <%@ include file="WEB-INF/navbar.jsp"%>
+        <%@ include file="web_support_elements/navbar.jsp"%>
       </td>
       <h1>Content goes here</h1>
     </tr>
   </table>
-  <%@include file="WEB-INF/footer.jsp"%>
+  <%@include file="web_support_elements/footer.jsp"%>
   <%
   String uid;
   String psw;
