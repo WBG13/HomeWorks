@@ -38,8 +38,6 @@ public class Interpolator {
 
         double currentPositionOnX = 0;
 
-        System.out.println(distance);
-        System.out.println(distanceOnXAxis);
         for (int i = 0; currentPositionOnX < (int) distance; i++) {
             axesXInterval[i] = (int) currentPositionOnX;
             output[i] = interpolate(currentPositionOnX);
