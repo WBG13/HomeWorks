@@ -1,19 +1,21 @@
-package LagrangesInterpolation.HW.GUI.Model;
-
-
-/**
- * Created by TH-221 on 13.09.2016.
- */
 public class Interpolator {
     private int[] x;
     private int[] y;
+    private int maxNumberOfThreads = 0;
 
-    public Interpolator(int[] x, int[] y) {
+    public Interpolator(ObjectParameters objectParameters, int maxNumberOfThreads) {
+        int[] x = new int[objectParameters.getPoints().length];
+        int[] y = new int[objectParameters.getPoints().length];
+        this.maxNumberOfThreads = maxNumberOfThreads;
+        for (int i = 0; i < objectParameters.getPoints().length; i++) {
+            x[i] = objectParameters.getPoints()[i].x;
+            y[i] = objectParameters.getPoints()[i].y;
+        }
         this.x = x;
         this.y = y;
     }
 
-    public int interpolate(double distanceOnX) {
+    private int interpolate(double distanceOnX) {
         double result = 0;
         for (int i = 0; i < x.length; i++) {
             double k = 1;
@@ -24,27 +26,25 @@ public class Interpolator {
             }
             result += k * y[i];
         }
-        return (int) result;
+        Checker checker = new Checker();
+        return ((int) result + checker.rounding(result));
     }
 
-    public int[] getInterpolatedArray(double distanceOnXAxis) {
-        int[] output;
-        int[] axesXInterval;
-        double distance = ((double) x[x.length - 1]);
 
-        int toMany = (int) distance;
-        output = new int[((int) (toMany / (distance * distanceOnXAxis))) + 1];
-        axesXInterval = new int[(int) (toMany / distanceOnXAxis)];
+    public int[] getInterpolatedArray(double firstPosition, double interval) {
+        double maxValueOfXAxisInDouble = ((double) x[x.length - 1]);
+        double intervalOnXAxis = maxValueOfXAxisInDouble * interval;
+        double currentPositionOnX = maxValueOfXAxisInDouble * firstPosition;
+        int maxStepsInInt = (int) ((maxValueOfXAxisInDouble / (maxValueOfXAxisInDouble * interval)));
+        double minIntervalThreadStep = ((maxValueOfXAxisInDouble * (interval / maxNumberOfThreads)));
+        int numberExistingOnNextLine = (maxStepsInInt * intervalOnXAxis) + currentPositionOnX - minIntervalThreadStep < maxValueOfXAxisInDouble ? 1 : 0;
+        int[] output = new int[maxStepsInInt + numberExistingOnNextLine];
 
-        double currentPositionOnX = 0;
-
-        for (int i = 0; currentPositionOnX < (int) distance; i++) {
-            axesXInterval[i] = (int) currentPositionOnX;
+        for (int i = 0; (currentPositionOnX - minIntervalThreadStep) < maxValueOfXAxisInDouble; i++) {
             output[i] = interpolate(currentPositionOnX);
-            currentPositionOnX += (distance * distanceOnXAxis);
-            System.out.println("Current position = " + currentPositionOnX);
+            currentPositionOnX += intervalOnXAxis;
+
         }
         return output;
     }
 }
-
